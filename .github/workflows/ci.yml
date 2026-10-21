@@ -2,46 +2,22 @@
 name: CI
 
 on:
-  pull_request:
   push:
     branches:
-      - master
       - main
       - "feature/**"
+  pull_request:
+    branches:
+      - main
+
 jobs:
-  security:
-    name: Security checks
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-
-      - name: Install system packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y libpq-dev libvips
-
-      - name: Run Brakeman
-        run: bundle exec brakeman --no-pager
-
-      - name: Run bundler-audit
-        run: bundle exec bundler-audit check --update
-
-  lint:
+  rubocop:
     name: RuboCop
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
@@ -49,10 +25,9 @@ jobs:
       - name: Run RuboCop
         run: bundle exec rubocop
 
-  test:
+  rspec:
     name: RSpec
     runs-on: ubuntu-latest
-
     services:
       postgres:
         image: postgres:17
@@ -73,11 +48,9 @@ jobs:
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/task_manager_api_test
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
@@ -90,3 +63,31 @@ jobs:
 
       - name: Run RSpec
         run: bundle exec rspec
+
+  brakeman:
+    name: Brakeman
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Run Brakeman security scan
+        run: bundle exec brakeman --no-pager
+
+  bundler-audit:
+    name: Bundler Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Check vulnerable gems
+        run: bundle exec bundler-audit check --update
