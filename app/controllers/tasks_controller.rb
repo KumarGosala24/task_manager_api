@@ -1,41 +1,41 @@
 class TasksController < ApplicationController
     before_action :set_task, only: %i[show update destroy]
 
-    #GET /tasks
+    # GET /tasks
 
     def index
         render json: Task.all
     end
 
-    #GET /tasks/:id
-    def show 
+    # GET /tasks/:id
+    def show
         render json: @task
     end
 
-    #POST /tasks
+    # POST /tasks
     def create
         task = Task.new(task_params)
 
         if task.save
             render json: task, status: :created
         else
-            render json: {errors: task.errors.full_messages},
+            render json: { errors: task.errors.full_messages },
             status: :unprocessable_entity
         end
     end
 
-    #PATCH /tasks/:id
+    # PATCH /tasks/:id
 
     def update
         if @task.update(task_params)
             render json: @task
         else
-            render json: {errors: @task.errrors.full_messages},
+            render json: { errors: @task.errrors.full_messages },
             status: :unprocessable_entity
         end
     end
 
-    #delete /task/:id
+    # delete /task/:id
 
     def destroy
         @task.destroy!
@@ -51,5 +51,4 @@ class TasksController < ApplicationController
     def task_params
         params.require(:task).permit(:title, :description, :completed)
     end
-
 end

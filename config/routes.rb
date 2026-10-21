@@ -8,9 +8,6 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  #task for crud API's
+  # task for crud API's
   resources :tasks
-
-
-
 end
