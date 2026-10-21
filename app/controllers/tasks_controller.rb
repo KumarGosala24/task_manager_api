@@ -30,7 +30,7 @@ class TasksController < ApplicationController
         if @task.update(task_params)
             render json: @task
         else
-            render json: { errors: @task.errrors.full_messages },
+            render json: { errors: @task.errors.full_messages },
             status: :unprocessable_entity
         end
     end
