@@ -1,24 +1,48 @@
-# README
+# Task Manager API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A simple REST API built using Ruby on Rails and PostgreSQL to manage tasks.
 
-Things you may want to cover:
+## Technologies
+- Ruby on Rails (API)
+- PostgreSQL
+- RSpec
+- RuboCop
+- Brakeman
+- Bundler Audit
+- GitHub Actions
 
-* Ruby version
+## Features
+- Create a task
+- View all tasks
+- View a single task
+- Update a task
+- Delete a task
 
-* System dependencies
+## Setup
 
-* Configuration
+```bash
+git clone <your-repository-url>
+cd task_manager_api
+bundle install
+rails db:create db:migrate
+rails server
+```
 
-* Database creation
+API base URL: `http://localhost:3000`
 
-* Database initialization
+## Testing
 
-* How to run the test suite
+```bash
+bundle exec rspec
+bundle exec rubocop
+bundle exec brakeman --no-pager
+bundle exec bundler-audit check --update
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+## CI/CD
 
-* Deployment instructions
+GitHub Actions automatically runs four checks: RSpec, RuboCop, Brakeman, and Bundler Audit.
 
-* ...
+## License
+
+For learning and practice purposes.
